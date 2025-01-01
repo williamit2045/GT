@@ -1,0 +1,42 @@
+<!--views/partials/results.ejs - template for displaying cohorts-->
+
+<section class="results">
+    <div class="sort-options">
+        <label for="sortType-<%= typeof section !== 'undefined' ? section : 'default' %>">Sort By:</label>
+        <select 
+            id="sortType-<%= typeof section !== 'undefined' ? section : 'default' %>"
+            class="sort-select"
+            data-base-cohort-id="<%= baseCohort ? baseCohort._id : baseCohorts && baseCohorts.length ? baseCohorts.map(c => c._id).join(',') : '' %>"
+            data-section="<%= typeof section !== 'undefined' ? section : '' %>"
+            onchange="updateShow(this.value, 1, this.getAttribute('data-base-cohort-id'), this.getAttribute('data-section'))">
+            <option value="sharedUsers" <%= sortType === 'sharedUsers' ? 'selected' : '' %>>Shared Users</option>
+            <option value="sharedCohorts" <%= sortType === 'sharedCohorts' ? 'selected' : '' %>>Shared Cohorts</option>
+            <option value="userCount" <%= sortType === 'userCount' ? 'selected' : '' %>>User Count</option>
+            <option value="alpha" <%= sortType === 'alpha' ? 'selected' : '' %>>Alphabetical</option>
+        </select>
+    </div>
+    <ul class="cohorts">
+        <% if (cohorts && cohorts.length > 0) { %>
+            <% cohorts.forEach(cohort => { %>
+                <li class="cohort">
+                    <a href="/cohort/details?id=<%= cohort._id %>&title=<%= encodeURIComponent(cohort.cohort) %>" class="cohortLink">
+                        <%= cohort.cohort %>
+                    </a>
+                    <div class="cohort-info">
+                        <span>Users: <%= cohort.userCount %></span>
+                        <span>Cohorts: <%= cohort.sharedCohortCount %></span>
+                        <% if (user && Array.isArray(cids)) { %>
+                            <% if (cids.includes(cohort._id.toString())) { %>
+                                <a href="/cohort/leave?cohortId=<%= cohort._id %>" class="leave-btn">Leave</a>
+                            <% } else { %>
+                                <a href="/cohort/join?cohortId=<%= cohort._id %>" class="join-btn">Join</a>
+                            <% } %>
+                        <% } %>
+                    </div>
+                </li>
+            <% }) %>
+        <% } else { %>
+            <p>No cohorts available to display.</p>
+        <% } %>
+    </ul>
+</section>

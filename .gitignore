@@ -1,0 +1,10 @@
+# Dependency directories
+node_modules/
+
+# dotenv environment variable files
+.env
+
+views/test.ejs
+package-lock.json
+node_modules/**
+

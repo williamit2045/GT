@@ -1,0 +1,33 @@
+<%- include('./partials/header', { title: 'Extraversion' }) %>
+<%- include('./partials/nav') %>
+
+<section class="extraversion">
+    <h2>What is the world thinking?</h2>
+    <br>
+        <section id="results">
+            <%- include('./partials/results', { 
+                cohorts: typeof cohorts !== 'undefined' ? cohorts : [],
+                sortingCohort: typeof sortingCohort !== 'undefined' ? sortingCohort : {},
+                cids: typeof cids !== 'undefined' ? cids : [],
+                user: typeof user !== 'undefined' ? user : null,
+                sortType: sortType
+            }) %>
+        </section>
+        <%- include('./partials/pagination', { page: typeof page !== 'undefined' ? page : 1 }) %>
+</section>
+
+<%- include('./partials/footer') %>
+
+<script src="/js/results.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const maxVisibleCohorts = 12;
+        const cohorts = document.querySelectorAll('.cohort');
+        cohorts.forEach((cohort, index) => {
+            if (index >= maxVisibleCohorts) {
+                cohort.style.display = 'none';
+            }
+        });
+    });
+</script>
